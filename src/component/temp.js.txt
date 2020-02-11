@@ -1,0 +1,7 @@
+<NavDropdown title="More" id="basic-nav-dropdown" style={{ fontSize: "17px" }}>
+    <NavDropdown.Item href="\Login1">Log In</NavDropdown.Item>
+    <NavDropdown.Item href="\Main">Sign UP</NavDropdown.Item>
+    <NavDropdown.Item href="\Checkhistory">Check History</NavDropdown.Item>
+    <NavDropdown.Divider />
+    <NavDropdown.Item href="\Editprofile">Edit Profile</NavDropdown.Item>
+</NavDropdown>

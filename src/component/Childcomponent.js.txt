@@ -1,0 +1,13 @@
+import React, { Component } from 'react'
+
+export class Childcomponent extends Component {
+    render() {
+        return (
+            <div>
+                <button onClick={() =>this.props.greethandler('Mohini')}>Greet parent</button>
+            </div>
+        )
+    }
+}
+
+export default Childcomponent

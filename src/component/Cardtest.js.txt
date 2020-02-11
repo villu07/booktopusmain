@@ -1,0 +1,31 @@
+import React, { Component } from 'react'
+import Card from 'react-bootstrap/Card';
+import CardDeck from 'react-bootstrap/CardDeck';
+import logo from './image/background.jpg'
+import 'semantic-ui-css/semantic.min.css';
+export class Cardtest extends Component {
+    render() {
+        return (
+                <div class="ui card">
+                    <div class="ui slide masked reveal image">
+                        <img src={logo} class="visible content" width="200px"/>
+                        <img src={logo} class="hidden content" width="200px"/>
+                    </div>
+                    <div class="content">
+                    <a class="header">Team Fu &amp; Hess</a>
+                    <div class="meta">
+                    <span class="date">Created in Sep 2014</span>
+                    </div>
+                    </div>
+                <div class="extra content">
+                <a>
+                    <i class="users icon"></i>
+                    2 Members
+                </a>
+            </div>
+    </div>
+        )
+    }
+}
+
+export default Cardtest

@@ -1,0 +1,38 @@
+import React, { Component } from 'react'
+import {Nav,Navbar,Form,FormControl,Container,NavDropdown} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { GiOpenBook } from 'react-icons/gi';
+import { GoSearch } from 'react-icons/go';
+export class Navbar1 extends Component {
+    render() {
+        return (
+            <div>
+                
+                <Navbar style={{backgroundColor:"#512da8"}} variant="dark" expanded='true'>
+                <Container>
+                    <GiOpenBook size="50px" color="White"  style={{marginRight:'10px'}}/>
+                    <Navbar.Brand href="#home">BOOKTOPUS</Navbar.Brand>
+                    <Form inline>
+                    <FormControl type="text" placeholder="Search" className="ml-sm-2" style={{width:'580px',borderRadius:'53px'}}/>
+                    <GoSearch size='30px' color='white'/>
+                    </Form>
+                    <Nav>
+                        <Nav.Link href="#home"  style={{marginRight:'30px',marginLeft:'5px'}}>Home</Nav.Link>
+                        <Nav.Link href="#Aboutus" style={{marginRight:'30px',marginLeft:'5px'}}>About US</Nav.Link>
+                        <NavDropdown title="More" id="collasible-nav-dropdown">
+                            <NavDropdown.Item href="#Login">Login</NavDropdown.Item>
+                            <NavDropdown.Item href="#Register">Sign UP</NavDropdown.Item>
+                            <NavDropdown.Item href="#CheckHistory">Check History</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item href="#action/3.4">Edit Profile</NavDropdown.Item>
+                        </NavDropdown>
+                    </Nav>
+                </Container>
+                </Navbar>
+                
+            </div>
+        )
+    }
+}
+
+export default Navbar1
