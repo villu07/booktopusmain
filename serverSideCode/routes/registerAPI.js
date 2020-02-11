@@ -42,13 +42,15 @@ router.route('/register')
         })
             .then((doc, err) => {
 
-                if (err) throw err;
+                var dbCode = doc.sixDigitCode;
 
-                else if (doc.sixDigitCode != code) {
+                if (err) return res.status(400).json({ msg: 'Error :' + err });
+
+                else if (dbCode !== code) {
                     res.status(400).json({
                         msg: 'Code is invalid, please try to register again'
                     }).end();
-                    return;
+
                 }
 
                 else {
