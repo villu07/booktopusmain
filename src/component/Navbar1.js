@@ -1,20 +1,70 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav, Navbar, Form, FormControl, Container, NavItem } from 'react-bootstrap';
+import { Nav, Navbar, Form, FormControl, Container, NavItem, Button } from 'react-bootstrap';
 import { GiOpenBook } from 'react-icons/gi';
 //import { GoSearch } from 'react-icons/go';
-import { NavLink } from 'react-router-dom'
+import { NavLink, Redirect } from 'react-router-dom'
 import './css/index.css';
 import Logout from './Logout';
+import store from './reduxStore';
+import { LOGOUT_SUCCESS } from '../actions/types';
+import { Login } from './Login';
 
 export class Navbar1 extends Component {
 
-    handleLogout = e => {
+    state = {
+        token: null,
+        logoutSuccess: false
+    }
 
+    // componentDidMount() {
+    //     this.state.token = store.getState().auth.token;
+    // }
+
+    handleLogin = e => {
+        e.preventDefault();
+
+        return (
+            <Login />
+        )
+    }
+
+    handleRegister = e => {
         e.preventDefault();
     }
 
+    handelLogout = e => {
+        //e.preventDefault();
+
+        store.dispatch({
+            type: LOGOUT_SUCCESS
+        })
+
+        this.setState({
+            logoutSuccess: true
+        })
+
+        alert('You are successfully logged out !');
+    }
+
     render() {
+
+        const token = store.getState().auth.token;
+
+        if (this.state.redirect === true) {
+            return <Redirect to='/' />
+        }
+
+        const renderAuthButton = () => {
+            if (token !== null) {
+                return <button onClick={this.handelLogout}>Logout</button>
+            } else {
+                //return <button onClick={this.handleLogin}>Login</button>
+                return <NavLink to="/Login" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Login</NavLink>
+                // <NavLink to="/Register" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Register</NavLink>
+            }
+        }
+
         return (
             <div>
                 <Navbar className="navbar" expand="lg">
@@ -30,11 +80,35 @@ export class Navbar1 extends Component {
                                 {/* <GoSearch size='30px' color='white' /> */}
                             </Form>
                             <Nav className="ml-auto">
-                                <NavLink to="/Login" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Login</NavLink>
-                                <NavLink to="/Register" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Register</NavLink>
-                                <NavLink to="/About" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>About Us</NavLink>
-                                <NavLink to="/Logout" className="font1" onClick={this.handleLogout} style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Logout</NavLink>
+                                {/* <NavLink to="/Logout" className="font1" onClick={this.handleLogout} style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Logout</NavLink> */}
+                                {/* {token ? (
+                                        // <button onClick={this.handelLogout}>Logout</button>
+                                        //console.log('Logout')
+                                        <Logout />
+                                    ) : (
+                                            // <button onClick={this.handleLogin}>Login</button>
+                                            // <button onClick={this.handleRegister}>Register</button>
+                                            //console.log('Login')
+                                            <Loginbutton />
+                                    )} */}
 
+                                {renderAuthButton()}
+
+                                {/* if({this.state.token}){
+                                    return (
+                                        <div>
+                                    <NavLink to="/Logout" className="font1" onClick={this.handleLogout} style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Logout</NavLink>
+                                    </div>
+                                    //<Button onClick={this.handelClick}>Logout</Button>
+                                );
+                                    
+                                }
+                                else
+                                {
+                                    // <NavLink to="/Login" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Login</NavLink>
+                                    // <NavLink to="/Register" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Register</NavLink>
+                                    // <NavLink to="/About" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>About Us</NavLink>
+                                } */}
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

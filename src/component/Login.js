@@ -32,7 +32,8 @@ export class Login extends Component {
         email: '',
         password: '',
         msg: null,
-        isAuthenticated: false
+        isAuthenticated: false,
+        redirect: false
     };
 
     handleChange = input => e => {
@@ -62,16 +63,13 @@ export class Login extends Component {
             password
         }
 
-        //store.dispatch(login(user));
-
-
         await axios
             .post('/users/login', {
                 email,
                 password
             })
             .then(res => {
-                alert('Loggin in');
+
                 const msg = res.data.msg;
                 this.setState({
                     msg
@@ -83,7 +81,9 @@ export class Login extends Component {
                     payload: res.data
                 })
 
-
+                this.setState({
+                    redirect: true
+                })
             })
             .catch(err => {
                 const msg = err.response.data.msg;
@@ -99,34 +99,25 @@ export class Login extends Component {
             })
 
         if (store.getState().auth.isAuthinticated) {
-            console.log(store.getState().auth.isAuthinticated);
-            //this.props.history.push('/');
-            //console.log(props);
-            //browserHistory.push('/');
-            // <Redirect to='/' ></Redirect>
+            //console.log(store.getState().auth.isAuthinticated);
+
+            this.setState({
+                redirect: true
+            })
         }
         else {
-            console.log('False');
+            this.setState({
+                redirect: false
+            })
         }
 
-
-
-        // var authenticity = store.getState().auth.isAuthinticated;
-        // console.log(authenticity);
-        // this.setState({
-        //     isAuthenticated: authenticity
-        // })
-
-        // console.log(this.state.isAuthenticated);
-        // if (this.state.isAuthenticated) {
-
-        //     this.props.history.push(App);
-        // }
     }
 
-
-
     render() {
+        if (this.state.redirect === true) {
+            return <Redirect to='/' />
+        }
+
         return (
             <div>
                 <Table className="login-form mt-5 mb-5"
@@ -159,7 +150,7 @@ export class Login extends Component {
                                 <div className="text-center">
                                     <Button style={{ fontFamily: 'Verdana', backgroundColor: '#154CFF' }} type="submit" onClick={this.handleSubmit}>
                                         Submit
-                            </Button>
+                                    </Button>
                                 </div>
                                 <div style={{ textAlign: 'center', marginTop: '15px', fontFamily: 'Verdana' }}>
                                     <Link to="/Register" style={{ color: 'Black' }}>Sign up</Link>

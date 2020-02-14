@@ -4,6 +4,7 @@ import { ConfCode } from './ConfCode';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
+import store from './reduxStore';
 
 export class Register extends Component {
     state = {
@@ -18,6 +19,7 @@ export class Register extends Component {
         contact: '',
         Gender: '',
         msg: null,
+        redirect: false,
 
         // step 2
         code: ''
@@ -107,9 +109,7 @@ export class Register extends Component {
                         msg
                     })
                     alert(this.state.msg);
-                    //<Link to="/"></Link>
-                    // let path = `/`;
-                    // useHistory().push(path);
+
                 })
                 .catch(err => {
 
@@ -124,10 +124,24 @@ export class Register extends Component {
         catch (e) {
             console.log(e.toString());
             this.setState({
-                msg:e
+                msg: e
             })
             alert(this.state.msg);
         }
+
+        if (store.getState().auth.isAuthinticated) {
+            //console.log(store.getState().auth.isAuthinticated);
+
+            this.setState({
+                redirect: true
+            })
+        }
+        else {
+            this.setState({
+                redirect: false
+            })
+        }
+
     }
 
     showStep = () => {
