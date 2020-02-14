@@ -1,18 +1,25 @@
 import React, { Component } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Nav, Navbar, Form, FormControl, Container } from 'react-bootstrap';
+import { Nav, Navbar, Form, FormControl, Container, NavItem } from 'react-bootstrap';
 import { GiOpenBook } from 'react-icons/gi';
 //import { GoSearch } from 'react-icons/go';
 import { NavLink } from 'react-router-dom'
 import './css/index.css';
+import Logout from './Logout';
 
 export class Navbar1 extends Component {
+
+    handleLogout = e => {
+
+        e.preventDefault();
+    }
+
     render() {
         return (
             <div>
                 <Navbar className="navbar" expand="lg">
                     <Container fluid>
-                        <GiOpenBook size="50px" style={{ marginRight: '10px', color: "#e55400" }} />
+                        <GiOpenBook size="50px" style={{ marginRight: '10px', color: '#535758' }} />
                         <Navbar.Brand style={{ color: 'white', marginRight: '100px' }}>
                             <NavLink to="/" style={{ color: '#15181b', fontFamily: 'Oswald', fontWeight: 'bold' }}>BOOKTOPUS</NavLink>
                         </Navbar.Brand>
@@ -26,6 +33,8 @@ export class Navbar1 extends Component {
                                 <NavLink to="/Login" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Login</NavLink>
                                 <NavLink to="/Register" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Register</NavLink>
                                 <NavLink to="/About" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>About Us</NavLink>
+                                <NavLink to="/Logout" className="font1" onClick={this.handleLogout} style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px" }}>Logout</NavLink>
+
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

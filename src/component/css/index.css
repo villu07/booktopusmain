@@ -4,12 +4,12 @@ body{
     background-repeat: no-repeat;
     Height:10%;
     background-attachment: fixed; */
-      background:radial-gradient(#ed631a,#ed5b13,#e54d0c,#e4480b);
+      background-color: #ECF0F1;
      font-size:x-large;
      font-family: Oswald !important; 
 }
 .nav-link{
-      color:white !important;
+      color:#BDC3C7 !important;
 }
 hr{
       height: 1.5px;
@@ -41,7 +41,7 @@ a{
       width:560px;
 }
 #buttoncolor{
-      background-color:#ef610d !important;
+      background-color:#535758 !important;
       text-align: right !important;
 }
 .cardimage{
@@ -54,7 +54,7 @@ a{
 }
 .navbar{
       /* background-color:linear-gradient( to right,#9b300a,#a04312) !important; */
-      background-color: #f4ddb7;
+      background-color: #98A0A5;
 }
 .font1{
       font-weight: bold;
@@ -67,7 +67,7 @@ a{
       background-color:  #1b1e20 !important;
 }
 .title{
-      color: #e4480b;
+      color: #535758;
 }
 .footerimg{
       margin-left:auto ;

@@ -8,18 +8,27 @@ import { Register } from './component/Register.js';
 import { Forgotpassword } from './component/Forgotpassword.js';
 import { Carosal } from './component/Carosal.js'
 import { Home } from './component/Home.js';
-import { Hrstyle } from './component/Hrstyle.js'
+import { Hrstyle } from './component/Hrstyle.js';
+import { Provider } from 'react-redux';
+
+import store from './component/reduxStore';
+
 function App() {
+
   return (
-    <BrowserRouter>
-      <Route path='/' exact render={() => {
-        return (<div><div><Navbar1 /></div><br />
-          <div><Carosal /></div><br /><div><Hrstyle /></div><div><Home /></div><br /><div><Footer /></div></div>)
-      }} />
-      <Route path="/Login" exact render={() => { return (<Login />) }} />
-      <Route path="/Register" exact render={() => { return (< Register />) }} />
-      <Route path="/Forgotpassword" exact render={() => { return (< Forgotpassword />) }} />
-    </BrowserRouter>
+    <Provider store={store}>
+
+      <BrowserRouter>
+        <Route path='/' exact render={() => {
+          return (<div><div><Navbar1 /></div><br />
+            <div><Carosal /></div><br /><div><Hrstyle /></div><div><Home /></div><br /><div><Footer /></div></div>)
+        }} />
+        <Route path="/Login" exact render={() => { return (<Login />) }} />
+        <Route path="/Register" exact render={() => { return (< Register />) }} />
+        <Route path="/Forgotpassword" exact render={() => { return (< Forgotpassword />) }} />
+      </BrowserRouter>
+
+    </Provider>
   );
 }
 

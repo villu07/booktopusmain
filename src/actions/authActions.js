@@ -97,3 +97,30 @@ export const tokenConfig = getState => {
         config.headers['x-auth-token'] = token;
     };
 }
+
+/**
+ * Login user
+ */
+export const login = () => newUser => dispatch => {
+
+    axios
+        .post('/users/login', {
+
+            email: newUser.email,
+            password: newUser.password
+        })
+        .then(res => {
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch(getErrors(err.response.data, err.response.status));
+            dispatch({
+                type: LOGIN_FAIL
+            })
+        })
+}
+
+

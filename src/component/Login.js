@@ -8,33 +8,64 @@ import logo from './image/loginimage.jpg';
 import { GiOpenBook, GiHeavyThornyTriskelion } from 'react-icons/gi';
 import { MdPerson, MdLock } from 'react-icons/md';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { login } from '../actions/authActions';
+import { clearErrors } from '../actions/errorActions';
+import { connect } from 'react-redux';
+import store from '../component/reduxStore';
+import { LOGIN_SUCCESS, LOGIN_FAIL } from '../actions/types';
+import { getErrors } from '../actions/errorActions';
+import { Redirect } from 'react-router-dom';
+import { browserHistory } from 'react-router';
+import App from '../../src/App';
+
 import './css/index.css';
+import { Home } from './Home';
 
 export class Login extends Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     state = {
         email: '',
         password: '',
-        msg: null
-    }
-
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
+        msg: null,
+        isAuthenticated: false
+    };
 
     handleChange = input => e => {
         this.setState({ [input]: e.target.value });
     }
 
-    handleSubmit(e) {
-        //e.preventDefault();
+    static propTypes = {
+        isAuthenticated: PropTypes.bool,
+        error: PropTypes.func.isRequired,
+        login: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
+    }
+
+    handleSubmit = async (e, props) => {
+
         e.preventDefault();
 
-        const email = this.state.email;
-        const password = this.state.password;
+        var { email, password } = this.state;
 
-        axios
+        /**
+         * Converting user's email into lower case to reduce errors
+         */
+        email = email.toLowerCase();
+
+        const user = {
+            email,
+            password
+        }
+
+        //store.dispatch(login(user));
+
+
+        await axios
             .post('/users/login', {
                 email,
                 password
@@ -45,16 +76,55 @@ export class Login extends Component {
                 this.setState({
                     msg
                 })
-                alert(msg);
+                alert(this.state.msg);
+
+                store.dispatch({
+                    type: LOGIN_SUCCESS,
+                    payload: res.data
+                })
+
+
             })
             .catch(err => {
                 const msg = err.response.data.msg;
                 this.setState({
                     msg
                 })
-                alert(msg);
+                alert(this.state.msg);
+
+                store.dispatch(getErrors(err.response.data, err.response.status));
+                store.dispatch({
+                    type: LOGIN_FAIL
+                })
             })
+
+        if (store.getState().auth.isAuthinticated) {
+            console.log(store.getState().auth.isAuthinticated);
+            //this.props.history.push('/');
+            //console.log(props);
+            //browserHistory.push('/');
+            // <Redirect to='/' ></Redirect>
+        }
+        else {
+            console.log('False');
+        }
+
+
+
+        // var authenticity = store.getState().auth.isAuthinticated;
+        // console.log(authenticity);
+        // this.setState({
+        //     isAuthenticated: authenticity
+        // })
+
+        // console.log(this.state.isAuthenticated);
+        // if (this.state.isAuthenticated) {
+
+        //     this.props.history.push(App);
+        // }
     }
+
+
 
     render() {
         return (
@@ -105,4 +175,9 @@ export class Login extends Component {
     }
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+    isAuthenticated: state.auth.isAuthinticated,
+    error: state.error
+})
+
+export default connect(mapStateToProps, { login, clearErrors })(Login);

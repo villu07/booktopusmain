@@ -35,6 +35,8 @@ export class Register extends Component {
         //console.log(this.state);
 
         /** From here we will send email to the respected user */
+        var email = this.state.email;
+        email = email.toLowerCase();
 
         axios
             .post('/users/sendMail', {
@@ -78,17 +80,19 @@ export class Register extends Component {
 
     handleSubmit = async (e) => {
 
-        //e.preventDefault();
-        // console.log(user.first_name + ' ' + user.last_name + ' ' + user.email + ' ' + user.password + ' ' + user.contact + ' ' + user.gender);
-
         /**
          * Register user using axios
          */
+        var { firstName, lastName, email } = this.state;
+        firstName = firstName.toLowerCase();
+        lastName = lastName.toLowerCase();
+        email = email.toLowerCase();
+
         try {
             await axios.post('/regAPI/register', {
-                first_name: this.state.firstName,
-                last_name: this.state.lastName,
-                email: this.state.email,
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
                 password: this.state.password,
                 contact: this.state.contact,
                 gender: this.state.Gender,
@@ -119,6 +123,10 @@ export class Register extends Component {
         }
         catch (e) {
             console.log(e.toString());
+            this.setState({
+                msg:e
+            })
+            alert(this.state.msg);
         }
     }
 
