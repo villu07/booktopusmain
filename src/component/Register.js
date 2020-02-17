@@ -3,7 +3,7 @@ import { RegisterForm } from './RegisterForm';
 import { ConfCode } from './ConfCode';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, Redirect } from 'react-router-dom';
 import store from './reduxStore';
 
 export class Register extends Component {
@@ -19,7 +19,7 @@ export class Register extends Component {
         contact: '',
         Gender: '',
         msg: null,
-        redirect: false,
+        redirectToHome: false,
 
         // step 2
         code: ''
@@ -109,6 +109,13 @@ export class Register extends Component {
                         msg
                     })
                     alert(this.state.msg);
+                    /**
+                     * Here we set redirectToHome to true , just to redirect to homepage 
+                     * after successfully registration process
+                     */
+                    this.setState({
+                        redirectToHome: true
+                    })
 
                 })
                 .catch(err => {
@@ -118,6 +125,10 @@ export class Register extends Component {
                         msg
                     })
                     alert(this.state.msg);
+
+                    this.setState({
+                        redirectToHome: true
+                    })
                 })
 
         }
@@ -129,18 +140,18 @@ export class Register extends Component {
             alert(this.state.msg);
         }
 
-        if (store.getState().auth.isAuthinticated) {
-            //console.log(store.getState().auth.isAuthinticated);
+        // if (store.getState().auth.isAuthinticated) {
+        //     //console.log(store.getState().auth.isAuthinticated);
 
-            this.setState({
-                redirect: true
-            })
-        }
-        else {
-            this.setState({
-                redirect: false
-            })
-        }
+        //     this.setState({
+        //         redirectToHome: true
+        //     })
+        // }
+        // else {
+        //     this.setState({
+        //         redirectToHome: false
+        //     })
+        // }
 
     }
 
@@ -176,7 +187,9 @@ export class Register extends Component {
             );
     }
     render() {
-
+        if (this.state.redirectToHome) {
+            return <Redirect to='/' />
+        }
         return (
             <>
                 {this.showStep()}

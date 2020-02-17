@@ -13,8 +13,12 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthinticated: false,
     isLoading: false,
-    user: null,
-    msg: {}
+    //user: null,
+    msg: {},
+    id: '',
+    first_name: '',
+    last_name: '',
+    email: ''
 }
 
 export default function (state = initialState, action) {
@@ -43,7 +47,11 @@ export default function (state = initialState, action) {
                 ...action.payload,
                 isAuthinticated: true,
                 isLoading: false,
-                msg: action.payload.msg
+                msg: action.payload.msg,
+                // first_name: action.payload.first_name,
+                // last_name: action.payload.last_name,
+                // email: action.payload.email,
+                // id: action.paylod.id
             }
 
 
@@ -54,11 +62,15 @@ export default function (state = initialState, action) {
             localStorage.removeItem('token');
             return {
                 ...state,
-                user: null,
+                //user: null,
                 isAuthinticated: false,
                 isLoading: false,
                 token: null,
-                msg: null
+                msg: null,
+                first_name: null,
+                last_name: null,
+                email: null,
+                id: null
             }
         default:
             return state;

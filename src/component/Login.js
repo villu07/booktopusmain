@@ -33,7 +33,7 @@ export class Login extends Component {
         password: '',
         msg: null,
         isAuthenticated: false,
-        redirect: false
+        loginSuccess: false
     };
 
     handleChange = input => e => {
@@ -82,7 +82,7 @@ export class Login extends Component {
                 })
 
                 this.setState({
-                    redirect: true
+                    loginSuccess: true
                 })
             })
             .catch(err => {
@@ -102,19 +102,19 @@ export class Login extends Component {
             //console.log(store.getState().auth.isAuthinticated);
 
             this.setState({
-                redirect: true
+                loginSuccess: true
             })
         }
         else {
             this.setState({
-                redirect: false
+                loginSuccess: false
             })
         }
 
     }
-
     render() {
-        if (this.state.redirect === true) {
+
+        if (this.state.loginSuccess === true) {
             return <Redirect to='/' />
         }
 

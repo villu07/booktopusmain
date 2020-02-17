@@ -311,13 +311,11 @@ router.route('/login')
                 if (err) throw err;
                 res.status(200).json({
                   token,
-                  user: {
-                    id: result._id,
-                    first_name: result.first_name,
-                    last_name: result.last_name,
-                    email: result.email
-                  },
-                  msg:'You are successfully logged in.'
+                  id: result._id,
+                  first_name: result.first_name,
+                  last_name: result.last_name,
+                  email: result.email,
+                  msg: 'You are successfully logged in.'
                 });
               }
             )
