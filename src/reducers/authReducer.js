@@ -10,25 +10,25 @@ import {
 } from '../actions/types';
 
 const initialState = {
+
     token: localStorage.getItem('token'),
     isAuthinticated: false,
     isLoading: false,
-    //user: null,
-    msg: {},
-    id: '',
-    first_name: '',
-    last_name: '',
-    email: ''
+    msg: '',
+    id: localStorage.getItem('id'),
+    first_name: localStorage.getItem('first_name'),
+    last_name: localStorage.getItem('last_name'),
+    email: localStorage.getItem('email')
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+
         case USER_LOADING:
             return {
                 ...state,
                 isLoading: true
             }
-
 
         case USER_LOADED:
             return {
@@ -38,40 +38,41 @@ export default function (state = initialState, action) {
                 user: action.payload
             }
 
-
+        /**
+                         * Setting user data into the localstorage for refresh retaining purpose
+                         */
         case LOGIN_SUCCESS:
-        case REGISTER_SUCCESS:
-            localStorage.setItem('token', action.payload.token)
+            localStorage.setItem('token', action.payload.token);
+            localStorage.setItem('id', action.payload.id);
+            localStorage.setItem('first_name', action.payload.first_name);
+            localStorage.setItem('last_name', action.payload.last_name);
+            localStorage.setItem('email', action.payload.email);
             return {
                 ...state,
                 ...action.payload,
                 isAuthinticated: true,
                 isLoading: false,
                 msg: action.payload.msg,
-                // first_name: action.payload.first_name,
-                // last_name: action.payload.last_name,
-                // email: action.payload.email,
-                // id: action.paylod.id
             }
 
 
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
-        case REGISTER_FAIL:
+            localStorage.removeItem('id');
+            localStorage.removeItem('first_name');
+            localStorage.removeItem('last_name');
+            localStorage.removeItem('email');
             localStorage.removeItem('token');
+
             return {
                 ...state,
-                //user: null,
                 isAuthinticated: false,
                 isLoading: false,
                 token: null,
-                msg: null,
-                first_name: null,
-                last_name: null,
-                email: null,
-                id: null
+                msg: null
             }
+
         default:
             return state;
     }

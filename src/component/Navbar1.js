@@ -25,7 +25,7 @@ export class Navbar1 extends Component {
     state = {
         token: null,
         logoutSuccess: false,
-        firstName: '',
+        firstName: null,
         lastName: '',
         email: ''
     }

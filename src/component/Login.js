@@ -40,14 +40,7 @@ export class Login extends Component {
         this.setState({ [input]: e.target.value });
     }
 
-    static propTypes = {
-        isAuthenticated: PropTypes.bool,
-        error: PropTypes.func.isRequired,
-        login: PropTypes.func.isRequired,
-        clearErrors: PropTypes.func.isRequired
-    }
-
-    handleSubmit = async (e, props) => {
+    handleSubmit = (e) => {
 
         e.preventDefault();
 
@@ -63,7 +56,7 @@ export class Login extends Component {
             password
         }
 
-        await axios
+        axios
             .post('/users/login', {
                 email,
                 password
@@ -86,18 +79,25 @@ export class Login extends Component {
                 })
             })
             .catch(err => {
+
                 const msg = err.response.data.msg;
                 this.setState({
                     msg
                 })
                 alert(this.state.msg);
 
-                store.dispatch(getErrors(err.response.data, err.response.status));
-                store.dispatch({
-                    type: LOGIN_FAIL
-                })
+                if (err.response && err.response.data) {
+                    store.dispatch(getErrors(err.response.data, err.response.status));
+                    store.dispatch({
+                        type: LOGIN_FAIL
+                    })
+                }
+
             })
 
+        /**
+         * THis loginSuccess is used to route to the homepage when user is authenticated
+         */
         if (store.getState().auth.isAuthinticated) {
             //console.log(store.getState().auth.isAuthinticated);
 
@@ -155,6 +155,8 @@ export class Login extends Component {
                                 <div style={{ textAlign: 'center', marginTop: '15px', fontFamily: 'Verdana' }}>
                                     <Link to="/Register" style={{ color: 'Black' }}>Sign up</Link>
                                     <span className="p-2" style={{ fontSize: '20px', color: 'Black' }}>|</span>
+                                    <a href='/'>Home</a>
+                                    <span className="p-2" style={{ fontSize: '20px', color: 'Black' }}>|</span>
                                     <Link to="/Forgotpassword" style={{ color: 'Black' }}>Forgot Password</Link>
                                 </div>
                             </Form>
@@ -166,9 +168,9 @@ export class Login extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    isAuthenticated: state.auth.isAuthinticated,
-    error: state.error
-})
+// const mapStateToProps = (state) => ({
+//     isAuthenticated: state.auth.isAuthinticated,
+//     error: state.error
+// })
 
-export default connect(mapStateToProps, { login, clearErrors })(Login);
+export default (Login);
