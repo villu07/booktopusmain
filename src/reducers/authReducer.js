@@ -59,18 +59,22 @@ export default function (state = initialState, action) {
         case AUTH_ERROR:
         case LOGIN_FAIL:
         case LOGOUT_SUCCESS:
-            localStorage.removeItem('id');
-            localStorage.removeItem('first_name');
-            localStorage.removeItem('last_name');
-            localStorage.removeItem('email');
-            localStorage.removeItem('token');
-
+            // localStorage.removeItem('token');
+            // localStorage.removeItem('id');
+            // localStorage.removeItem('first_name');
+            // localStorage.removeItem('last_name');
+            // localStorage.removeItem('email');
+            window.localStorage.clear();
             return {
                 ...state,
                 isAuthinticated: false,
                 isLoading: false,
                 token: null,
-                msg: null
+                msg: null,
+                id: null,
+                first_name: null,
+                last_name: null,
+                email: null
             }
 
         default:

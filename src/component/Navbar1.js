@@ -26,13 +26,13 @@ export class Navbar1 extends Component {
         token: null,
         logoutSuccess: false,
         firstName: null,
-        lastName: '',
-        email: ''
+        lastName: null,
+        email: null
     }
 
     componentDidMount(e) {
 
-        //        e.preventDefault();
+        //e.preventDefault();
         //this.state.firstName = store.getState().auth.user.first_name
         this.setState({
             firstName: store.getState().auth.first_name
@@ -57,13 +57,13 @@ export class Navbar1 extends Component {
 
         const token = store.getState().auth.token;
 
-        if (this.state.redirect === true) {
-            return <Redirect to='/' />
-        }
+        // if (this.state.redirect === true) {
+        //     return <Redirect to='/' />
+        // }
 
-        else if (this.state.logoutSuccess === true) {
-            return <Redirect to='/Login' />
-        }
+        // else if (this.state.logoutSuccess === true) {
+        //     return <Redirect to='/Login' />
+        // }
 
         const renderAuthButton = () => {
             if (token !== null) {

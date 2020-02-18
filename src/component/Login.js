@@ -24,9 +24,6 @@ import { Home } from './Home';
 
 export class Login extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
     state = {
         email: '',
@@ -35,6 +32,10 @@ export class Login extends Component {
         isAuthenticated: false,
         loginSuccess: false
     };
+
+    // componentDidMount() {
+    //     window.localStorage.clear();
+    // }
 
     handleChange = input => e => {
         this.setState({ [input]: e.target.value });
@@ -155,7 +156,8 @@ export class Login extends Component {
                                 <div style={{ textAlign: 'center', marginTop: '15px', fontFamily: 'Verdana' }}>
                                     <Link to="/Register" style={{ color: 'Black' }}>Sign up</Link>
                                     <span className="p-2" style={{ fontSize: '20px', color: 'Black' }}>|</span>
-                                    <a href='/'>Home</a>
+                                    {/* <a href='/'>Home</a> */}
+                                    <Link to="/" style={{ color: 'Black' }}>Home</Link>
                                     <span className="p-2" style={{ fontSize: '20px', color: 'Black' }}>|</span>
                                     <Link to="/Forgotpassword" style={{ color: 'Black' }}>Forgot Password</Link>
                                 </div>
