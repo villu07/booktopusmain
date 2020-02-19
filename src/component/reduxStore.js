@@ -11,7 +11,10 @@ const store = createStore(
     initialState,
     compose(
         applyMiddleware(...middleware),
-        //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        /**
+         * Disable this extension when you deliever the project
+         */
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     ));
 
 export default store;

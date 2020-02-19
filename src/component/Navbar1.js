@@ -27,7 +27,10 @@ export class Navbar1 extends Component {
         logoutSuccess: false,
         firstName: null,
         lastName: null,
-        email: null
+        email: null,
+        bookUploadAccess: null,
+        materialUploadAccess: null,
+        toolUploadAccess: null
     }
 
     componentDidMount(e) {
@@ -37,6 +40,72 @@ export class Navbar1 extends Component {
         this.setState({
             firstName: store.getState().auth.first_name
         })
+    }
+
+    checkAuthBook = e => {
+
+        const token = store.getState().auth.token;
+        /**
+         * If user is logged in then token will not be empty
+         */
+        if (token) {
+            this.setState({
+                bookUploadAccess: true
+            })
+        }
+        /**
+         * Not logged in
+         */
+        else {
+            this.setState({
+                bookUploadAccess: false
+            })
+            alert("You haven't logged in. Please log in to continue.");
+        }
+    }
+
+    checkAuthMaterial = e => {
+
+        const token = store.getState().auth.token;
+        /**
+         * If user is logged in then token will not be empty
+         */
+        if (token) {
+            this.setState({
+                materialUploadAccess: true
+            })
+        }
+        /**
+         * Not logged in
+         */
+        else {
+            this.setState({
+                materialUploadAccess: false
+            })
+            alert('Please log in to continue the material uploading');
+        }
+    }
+
+    checkAuthTool = e => {
+
+        const token = store.getState().auth.token;
+        /**
+         * If user is logged in then token will not be empty
+         */
+        if (token) {
+            this.setState({
+                toolUploadAccess: true
+            })
+        }
+        /**
+         * Not logged in
+         */
+        else {
+            this.setState({
+                toolUploadAccess: false
+            })
+            alert('Please log in to continue the tool uploading');
+        }
     }
 
     handelLogout = e => {
@@ -55,15 +124,21 @@ export class Navbar1 extends Component {
 
     render() {
 
-        const token = store.getState().auth.token;
-
-        // if (this.state.redirect === true) {
-        //     return <Redirect to='/' />
-        // }
-
-        // else if (this.state.logoutSuccess === true) {
+        /**
+         * To check the user is logged in or not.. And if not sidho ene login par redirect mar
+         */
+        // if (this.state.bookUploadAccess === false) {
         //     return <Redirect to='/Login' />
         // }
+
+        /**
+         * If logged in, then redirect to upload book page
+         */
+        if (this.state.bookUploadAccess === true) {
+            return <Redirect to='/UplBook'/>
+        }
+
+        const token = store.getState().auth.token;
 
         const renderAuthButton = () => {
             if (token !== null) {
@@ -72,16 +147,7 @@ export class Navbar1 extends Component {
                  */
                 return (
                     <React.Fragment>
-                        {/* <NavLink to="/" className="font1" style={{ marginRight: '30px', marginLeft: '300px', fontSize: "22px", marginTop: '5px' }}>Home</NavLink>
-                        <NavLink to="/AboutUs" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px", marginTop: '5px' }}>About Us</NavLink>
 
-                        <NavDropdown title={this.state.firstName} id="collasible-nav-dropdown" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px", marginTop: '5px' }}>
-                            <NavDropdown.Item ><NavLink to="#" className="font1">Upload Book</NavLink></NavDropdown.Item>
-                            <NavDropdown.Item ><NavLink to="#" className="font1">Check History</NavLink></NavDropdown.Item>
-                            <NavDropdown.Item><NavLink to="#" className="font1">Edit Profile</NavLink></NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item><NavLink to="#" className="font1" onClick={this.handelLogout}>Logout</NavLink ></NavDropdown.Item>
-                        </NavDropdown> */}
                         <NavLink to="#" className="font1" style={{ marginTop: '2.5%', marginRight: '10%' }}>Home</NavLink>
                         <NavLink to="#" className="font1" style={{ marginTop: '2.5%', marginRight: '10%' }}>AboutUs</NavLink>
                         <NavDropdown title={this.state.firstName} className="font1">
@@ -106,23 +172,14 @@ export class Navbar1 extends Component {
                 return (
 
                     <React.Fragment>
-                        {/* <NavLink to="/" className="font1" style={{ marginRight: '30px', marginLeft: '300px', fontSize: "22px", marginTop: '5px' }}>Home</NavLink>
-                        <NavLink to="/AboutUs" className="font1" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px", marginTop: '5px' }}>About Us</NavLink>
 
-                        <NavDropdown title='More' id="collasible-nav-dropdown" style={{ marginRight: '30px', marginLeft: '5px', fontSize: "22px", marginTop: '5px' }}>
-                            <NavDropdown.Item ><NavLink to="#" className="font1">Upload Book</NavLink></NavDropdown.Item>
-                            <NavDropdown.Item ><NavLink to="#" className="font1">Check History</NavLink></NavDropdown.Item>
-                            <NavDropdown.Item><NavLink to="#" className="font1">Edit Profile</NavLink></NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item><NavLink to="/Login" className="font1">Log In</NavLink ></NavDropdown.Item>
-                        </NavDropdown> */}
                         <NavLink to="#" className="font1" style={{ marginTop: '2.5%', marginRight: '10%' }}>Home</NavLink>
                         <NavLink to="#" className="font1" style={{ marginTop: '2.5%', marginRight: '10%' }}>AboutUs</NavLink>
                         <NavDropdown title="More" className="font1">
-                            <NavDropdown.Item >Upload Book</NavDropdown.Item>
-                            <NavDropdown.Item >Upload Material</NavDropdown.Item>
-                            <NavDropdown.Item >Upload Tools</NavDropdown.Item>
-                            <NavDropdown.Item >Check History</NavDropdown.Item>
+                            <NavDropdown.Item onClick={this.checkAuthBook}>Upload Book</NavDropdown.Item>
+                            <NavDropdown.Item onClick={this.checkAuthMaterial}>Upload Material</NavDropdown.Item>
+                            <NavDropdown.Item onClick={this.checkAuthTool}>Upload Tools</NavDropdown.Item>
+                            {/* <NavDropdown.Item onClick={this.checkHistoryAccess}>Check History</NavDropdown.Item> */}
                             <NavDropdown.Divider />
                             <NavDropdown.Item><NavLink to="/Login" className="font1">Log In</NavLink></NavDropdown.Item>
                         </NavDropdown>

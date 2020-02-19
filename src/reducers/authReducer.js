@@ -64,7 +64,7 @@ export default function (state = initialState, action) {
             // localStorage.removeItem('first_name');
             // localStorage.removeItem('last_name');
             // localStorage.removeItem('email');
-            window.localStorage.clear();
+            localStorage.clear();
             return {
                 ...state,
                 isAuthinticated: false,

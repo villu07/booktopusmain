@@ -286,7 +286,6 @@ router.route('/login')
 
     userModel.findOne({
       email: req.body.email
-
     })
 
       .then(result => {
@@ -331,7 +330,7 @@ router.route('/login')
         }
       })
       .catch((err) => {
-        res.send('error' + err);
+        res.status(400).json({ msg: 'Error ' + err });
       })
   })
 
