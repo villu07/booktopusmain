@@ -8,31 +8,54 @@ import logo from './image/loginimage.jpg';
 import { GiOpenBook, GiHeavyThornyTriskelion } from 'react-icons/gi';
 import { MdPerson, MdLock } from 'react-icons/md';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import { login } from '../actions/authActions';
+import { clearErrors } from '../actions/errorActions';
+import { connect } from 'react-redux';
+import store from '../component/reduxStore';
+import { LOGIN_SUCCESS, LOGIN_FAIL } from '../actions/types';
+import { getErrors } from '../actions/errorActions';
+import { Redirect } from 'react-router-dom';
+import { browserHistory } from 'react-router';
+import App from '../../src/App';
+
 import './css/index.css';
+import { Home } from './Home';
 
 export class Login extends Component {
+
 
     state = {
         email: '',
         password: '',
-        msg: null
-    }
+        msg: null,
+        isAuthenticated: false,
+        loginSuccess: false
+    };
 
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-    }
+    // componentDidMount() {
+    //     window.localStorage.clear();
+    // }
 
     handleChange = input => e => {
         this.setState({ [input]: e.target.value });
     }
 
-    handleSubmit(e) {
-        //e.preventDefault();
+    handleSubmit = (e) => {
+
         e.preventDefault();
 
-        const email = this.state.email;
-        const password = this.state.password;
+        var { email, password } = this.state;
+
+        /**
+         * Converting user's email into lower case to reduce errors
+         */
+        email = email.toLowerCase();
+
+        const user = {
+            email,
+            password
+        }
 
         axios
             .post('/users/login', {
@@ -40,23 +63,62 @@ export class Login extends Component {
                 password
             })
             .then(res => {
-                alert('Loggin in');
+
                 const msg = res.data.msg;
                 this.setState({
                     msg
                 })
-                alert(msg);
+                alert(this.state.msg);
+
+                store.dispatch({
+                    type: LOGIN_SUCCESS,
+                    payload: res.data
+                })
+
+                this.setState({
+                    loginSuccess: true
+                })
             })
             .catch(err => {
+
                 const msg = err.response.data.msg;
                 this.setState({
                     msg
                 })
-                alert(msg);
-            })
-    }
+                alert(this.state.msg);
 
+                if (err.response && err.response.data) {
+                    store.dispatch(getErrors(err.response.data, err.response.status));
+                    store.dispatch({
+                        type: LOGIN_FAIL
+                    })
+                }
+
+            })
+
+        /**
+         * THis loginSuccess is used to route to the homepage when user is authenticated
+         */
+        if (store.getState().auth.isAuthinticated) {
+            //console.log(store.getState().auth.isAuthinticated);
+
+            this.setState({
+                loginSuccess: true
+            })
+        }
+        else {
+            this.setState({
+                loginSuccess: false
+            })
+        }
+
+    }
     render() {
+
+        if (this.state.loginSuccess === true) {
+            return <Redirect to='/' />
+        }
+
         return (
             <div>
                 <Table className="login-form mt-5 mb-5"
@@ -89,10 +151,13 @@ export class Login extends Component {
                                 <div className="text-center">
                                     <Button style={{ fontFamily: 'Verdana', backgroundColor: '#154CFF' }} type="submit" onClick={this.handleSubmit}>
                                         Submit
-                            </Button>
+                                    </Button>
                                 </div>
                                 <div style={{ textAlign: 'center', marginTop: '15px', fontFamily: 'Verdana' }}>
                                     <Link to="/Register" style={{ color: 'Black' }}>Sign up</Link>
+                                    <span className="p-2" style={{ fontSize: '20px', color: 'Black' }}>|</span>
+                                    {/* <a href='/'>Home</a> */}
+                                    <Link to="/" style={{ color: 'Black' }}>Home</Link>
                                     <span className="p-2" style={{ fontSize: '20px', color: 'Black' }}>|</span>
                                     <Link to="/Forgotpassword" style={{ color: 'Black' }}>Forgot Password</Link>
                                 </div>
@@ -105,4 +170,9 @@ export class Login extends Component {
     }
 }
 
-export default Login;
+// const mapStateToProps = (state) => ({
+//     isAuthenticated: state.auth.isAuthinticated,
+//     error: state.error
+// })
+
+export default (Login);

@@ -19,7 +19,7 @@ export class Home extends Component {
                         <Row>
                             <Col sm={3}>
                                 <Card className='card'>
-                                    <Card.Img variant="top" src={card1front} className="cardimage" />
+                                    <Card.Img variant="top" src={card1front}  className="cardimage" />
                                     <Card.Body className='opct'>
                                         <Card.Title>C++</Card.Title>
                                         <Card.Text>

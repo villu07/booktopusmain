@@ -78,9 +78,6 @@ router.route('/register')
             .catch(err => {
                 res.status(400).json({ msg: 'Error :' + err }).end();
             })
-
-
-        //res.status(200).json({ msg: 'Congratulations, you are registered to BOOKTOPUS' });
     });
 
 module.exports = router;

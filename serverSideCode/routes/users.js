@@ -286,7 +286,6 @@ router.route('/login')
 
     userModel.findOne({
       email: req.body.email
-
     })
 
       .then(result => {
@@ -311,12 +310,11 @@ router.route('/login')
                 if (err) throw err;
                 res.status(200).json({
                   token,
-                  user: {
-                    id: result._id,
-                    first_name: result.first_name,
-                    last_name: result.last_name,
-                    email: result.email
-                  }
+                  id: result._id,
+                  first_name: result.first_name,
+                  last_name: result.last_name,
+                  email: result.email,
+                  msg: 'You are successfully logged in.'
                 });
               }
             )
@@ -332,7 +330,7 @@ router.route('/login')
         }
       })
       .catch((err) => {
-        res.send('error' + err);
+        res.status(400).json({ msg: 'Error ' + err });
       })
   })
 

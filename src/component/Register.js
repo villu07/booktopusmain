@@ -3,7 +3,8 @@ import { RegisterForm } from './RegisterForm';
 import { ConfCode } from './ConfCode';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, Redirect } from 'react-router-dom';
+import store from './reduxStore';
 
 export class Register extends Component {
     state = {
@@ -18,6 +19,7 @@ export class Register extends Component {
         contact: '',
         Gender: '',
         msg: null,
+        redirectToHome: false,
 
         // step 2
         code: ''
@@ -35,6 +37,8 @@ export class Register extends Component {
         //console.log(this.state);
 
         /** From here we will send email to the respected user */
+        var email = this.state.email;
+        email = email.toLowerCase();
 
         axios
             .post('/users/sendMail', {
@@ -78,17 +82,19 @@ export class Register extends Component {
 
     handleSubmit = async (e) => {
 
-        //e.preventDefault();
-        // console.log(user.first_name + ' ' + user.last_name + ' ' + user.email + ' ' + user.password + ' ' + user.contact + ' ' + user.gender);
-
         /**
          * Register user using axios
          */
+        var { firstName, lastName, email } = this.state;
+        firstName = firstName.toLowerCase();
+        lastName = lastName.toLowerCase();
+        email = email.toLowerCase();
+
         try {
             await axios.post('/regAPI/register', {
-                first_name: this.state.firstName,
-                last_name: this.state.lastName,
-                email: this.state.email,
+                first_name: firstName,
+                last_name: lastName,
+                email: email,
                 password: this.state.password,
                 contact: this.state.contact,
                 gender: this.state.Gender,
@@ -103,9 +109,14 @@ export class Register extends Component {
                         msg
                     })
                     alert(this.state.msg);
-                    //<Link to="/"></Link>
-                    // let path = `/`;
-                    // useHistory().push(path);
+                    /**
+                     * Here we set redirectToHome to true , just to redirect to homepage 
+                     * after successfully registration process
+                     */
+                    this.setState({
+                        redirectToHome: true
+                    })
+
                 })
                 .catch(err => {
 
@@ -114,12 +125,34 @@ export class Register extends Component {
                         msg
                     })
                     alert(this.state.msg);
+
+                    this.setState({
+                        redirectToHome: true
+                    })
                 })
 
         }
         catch (e) {
             console.log(e.toString());
+            this.setState({
+                msg: e
+            })
+            alert(this.state.msg);
         }
+
+        // if (store.getState().auth.isAuthinticated) {
+        //     //console.log(store.getState().auth.isAuthinticated);
+
+        //     this.setState({
+        //         redirectToHome: true
+        //     })
+        // }
+        // else {
+        //     this.setState({
+        //         redirectToHome: false
+        //     })
+        // }
+
     }
 
     showStep = () => {
@@ -154,7 +187,9 @@ export class Register extends Component {
             );
     }
     render() {
-
+        if (this.state.redirectToHome) {
+            return <Redirect to='/' />
+        }
         return (
             <>
                 {this.showStep()}
